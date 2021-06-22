@@ -1,0 +1,16 @@
+#loader {
+  height: 70vh;
+  width: 70vh;
+  opacity: 1;
+  transition: opacity 1s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 700px) {
+  #loader {
+    height: 80vw;
+    width: 80vw;
+  }
+}
