@@ -34,7 +34,7 @@ const Loader = ({ onComplete, darkMode }: Props) => {
         }, 1000);
       } else {
         // Increment progress
-        setProgress(progress + 0.5);
+        setProgress(progress + 1);
       }
     };
     // Set Interval

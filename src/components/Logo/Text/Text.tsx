@@ -4,10 +4,11 @@ import './Text.css';
 
 type Props = {
   side: string;
+  finished: boolean;
 };
 
 let timeoutID = 0;
-const Text = ({ side }: Props) => {
+const Text = ({ side, finished }: Props) => {
   // Position state
   const [position, setPosition] = useState(0);
   // Opacity state
@@ -27,6 +28,95 @@ const Text = ({ side }: Props) => {
   }`;
 
   useEffect(() => {
+    // Animation func
+    const setAnimation = () => {
+      let texts = document.querySelectorAll('.text');
+      if (texts !== undefined && texts !== null) {
+        if (side === 'left' && texts[0] !== undefined) {
+          texts[0].animate(
+            [
+              // keyframes
+              {
+                offset: 0.0,
+                transform: `translateX(-100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.1,
+                transform: `translateX(-100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.3,
+                transform: `translateX(-100%) translateY(calc(-50% - 20px))`,
+              },
+              {
+                offset: 0.5,
+                transform: ` translateX(-100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.57,
+                transform: `translateX(-100%) translateY(calc(-50% - 7px))`,
+              },
+              {
+                offset: 0.64,
+                transform: `translateX(-100%) translateY(-50%)`,
+              },
+              {
+                offset: 1.0,
+                transform: `translateX(-100%) translateY(-50%)`,
+              },
+            ],
+            {
+              // timing options
+              duration: 2000,
+              easing: 'cubic-bezier(0.280, 0.840, 0.420, 1)',
+              iterations: Infinity,
+            }
+          );
+        }
+        if (side === 'right' && texts[1] !== undefined) {
+          texts[1].animate(
+            [
+              // keyframes
+              {
+                offset: 0.0,
+                transform: `translateX(100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.1,
+                transform: `translateX(100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.3,
+                transform: `translateX(100%) translateY(calc(-50% - 20px))`,
+              },
+              {
+                offset: 0.5,
+                transform: ` translateX(100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.57,
+                transform: `translateX(100%) translateY(calc(-50% - 7px))`,
+              },
+              {
+                offset: 0.64,
+                transform: `translateX(100%) translateY(-50%)`,
+              },
+              {
+                offset: 1.0,
+                transform: `translateX(100%) translateY(-50%)`,
+              },
+            ],
+            {
+              // timing options
+              duration: 2000,
+              easing: 'cubic-bezier(0.280, 0.840, 0.420, 1)',
+              iterations: Infinity,
+            }
+          );
+        }
+      }
+    };
+
     // Window resize func
     const resize = () => {
       // Space between left and right text
@@ -49,12 +139,14 @@ const Text = ({ side }: Props) => {
 
     window.addEventListener('resize', resize);
 
+    if (finished) setAnimation();
+
     return () => {
       // Clear timeout and remove EventListener
       clearTimeout(timeoutID);
       window.removeEventListener('resize', resize);
     };
-  }, [setPosition]);
+  }, [setPosition, finished, side]);
 
   return (
     <div

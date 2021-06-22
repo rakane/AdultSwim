@@ -4,12 +4,13 @@ import './Bracket.css';
 
 type Props = {
   side: string;
+  finished: boolean;
 };
 
 // Timeout ID
 let timeoutID = 0;
 
-const Bracket = ({ side }: Props) => {
+const Bracket = ({ side, finished }: Props) => {
   // Position state
   const [position, setPosition] = useState(0);
   // Opacity state
@@ -29,6 +30,95 @@ const Bracket = ({ side }: Props) => {
   }`;
 
   useEffect(() => {
+    // Animation func
+    const setAnimation = () => {
+      let brackets = document.querySelectorAll('.bracket');
+      if (brackets !== undefined && brackets !== null) {
+        if (side === 'left' && brackets[0] !== undefined) {
+          brackets[0].animate(
+            [
+              // keyframes
+              {
+                offset: 0.0,
+                transform: `translateX(-100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.1,
+                transform: `translateX(-100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.3,
+                transform: `translateX(-100%) translateY(calc(-50% - 20px))`,
+              },
+              {
+                offset: 0.5,
+                transform: ` translateX(-100%) translateY(-50%)`,
+              },
+              {
+                offset: 0.57,
+                transform: `translateX(-100%) translateY(calc(-50% - 7px))`,
+              },
+              {
+                offset: 0.64,
+                transform: `translateX(-100%) translateY(-50%)`,
+              },
+              {
+                offset: 1.0,
+                transform: `translateX(-100%) translateY(-50%)`,
+              },
+            ],
+            {
+              // timing options
+              duration: 2000,
+              easing: 'cubic-bezier(0.280, 0.840, 0.420, 1)',
+              iterations: Infinity,
+            }
+          );
+        }
+        if (side === 'right' && brackets[1] !== undefined) {
+          brackets[1].animate(
+            [
+              // keyframes
+              {
+                offset: 0.0,
+                transform: `translateX(calc(100% + 26px)) translateY(-50%)`,
+              },
+              {
+                offset: 0.1,
+                transform: `translateX(calc(100% + 26px)) translateY(-50%)`,
+              },
+              {
+                offset: 0.3,
+                transform: `translateX(calc(100% + 26px)) translateY(calc(-50% - 20px))`,
+              },
+              {
+                offset: 0.5,
+                transform: ` translateX(calc(100% + 26px)) translateY(-50%)`,
+              },
+              {
+                offset: 0.57,
+                transform: `translateX(calc(100% + 26px)) translateY(calc(-50% - 7px))`,
+              },
+              {
+                offset: 0.64,
+                transform: `translateX(calc(100% + 26px)) translateY(-50%)`,
+              },
+              {
+                offset: 1.0,
+                transform: `translateX(calc(100% + 26px)) translateY(-50%)`,
+              },
+            ],
+            {
+              // timing options
+              duration: 2000,
+              easing: 'cubic-bezier(0.280, 0.840, 0.420, 1)',
+              iterations: Infinity,
+            }
+          );
+        }
+      }
+    };
+
     // Resize func
     const resize = () => {
       let seperator = 32;
@@ -54,14 +144,16 @@ const Bracket = ({ side }: Props) => {
     timeoutID = window.setTimeout(() => {
       resize();
       setOpacity('1');
-    }, 100);
+    }, 400);
     window.addEventListener('resize', resize);
+
+    if (finished) setAnimation();
 
     return () => {
       clearTimeout(timeoutID);
       window.removeEventListener('resize', resize);
     };
-  }, [side]);
+  }, [side, finished]);
 
   return (
     <div
